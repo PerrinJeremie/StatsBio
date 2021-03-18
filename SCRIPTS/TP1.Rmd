@@ -1,0 +1,271 @@
+---
+title: "TP1"
+author: "Jérémie Perrin"
+date: "11/03/2021"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../RAPPORTS/") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 1
+### Question 1.
+#### Open a new script. Save your file as TP1.r.
+### Question 2.
+#### Create the vector (1, 2, 3, 4, 5).
+```{r}
+1:5
+```
+### Question 3.
+#### Assign the previous vector to X .
+```{r}
+X <- 1:5
+```
+
+### Question 4.
+#### Check the contents of X.
+```{r}
+X
+```
+### Question 5.
+#### Create the vector Y with values (1, 4, 9, 16, 25).
+```{r}
+Y <- (1:5)**2;Y
+```
+### Question 6.
+#### Check that X and Y have the same length.
+```{r}
+length(X) == length(Y)
+```
+### Question 7.
+#### Plot the points defined by the two vectors X and Y by plot(X,Y).
+
+Change the symbol: pch=2, then pch=3, etc. Change the type: type="b", then type="l". Change the color: col="red", then col="blue", etc. Add a title, add labels on both axes.
+
+```{r }
+plot(X,Y)
+```
+```{r }
+plot(X,Y,pch=2)
+```
+```{r }
+plot(X,Y,pch=3)
+```
+```{r }
+plot(X,Y,type="b")
+```
+```{r }
+plot(X,Y,type="l")
+```
+```{r }
+plot(X,Y,type="l",col="red")
+```
+```{r }
+plot(X,Y,col="blue")
+```
+```{r }
+plot(X,Y,type="b",col="blue", main="Squares", xlab="Integers",ylab="Their squares")
+```
+
+### Question 8.
+#### Add the curve y = x²  by    curve(x^2,add=TRUE).
+
+```{r}
+plot(X,Y,type="b",xlim = c(0,6),ylim = c(0,36), col="blue", main="Squares", xlab="Integers",ylab="Their squares")
+curve(x**2,add=TRUE,col="red")
+```
+
+### Question 9.
+#### Create the vector X containing all integers from 0 to 7.
+
+```{r}
+X <- 0:7; X
+```
+
+### Question 10. 
+#### Multiply X by 5, divide it by 5, add 5 to it.
+
+```{r}
+X <- ((5*X)/5) + 5; X
+```
+
+### Question 11.
+#### Compute the sum of X, its cumulative sums. sum(),cumsum(). Compute the square root of X, its third power. Sqrt()
+```{r}
+sum(X);
+cumsum(X);
+sqrt(X);
+X**3
+```
+
+## Exercise 2
+
+### Question 1.
+#### Create the vector X containing (0, 1, 4, 9, 16).
+
+```{r}
+X <- (0:4)**2
+```
+
+### Question 2. 
+#### Extract from X the subvector with indices 3 and 5. Extract all values larger than 2. Extract all values larger than 2 and smaller than 10.
+
+```{r}
+X[c(3,5)];
+X[X>2];
+X[X>2 & X<10]
+```
+### Question 3.
+#### Create the vector Y containing 5 ones, the vector Z containing the sequence from 3 to 11 by step 2 (rep()seq().
+```{r}
+Y <- rep(1,5)
+Z <- seq(from=3,to = 11, by = 2)
+```
+#### Concatenate X, Y, Z. 
+```{r}
+c(X,Y,Z)
+```
+### Question 4.
+#### Bind them as columns, and assign the result to XYZ.
+```{r}
+XYZ <- cbind(X,Y,Z);XYZ
+```
+### Question 5.
+#### Compute row sums and column sums of XYZ.
+
+```{r}
+colSums(XYZ);
+rowSums(XYZ)
+```
+### Question 6.
+#### Extract from XYZ:
+
+(a) row number 4
+
+```{r }
+XYZ[4,]
+```
+
+(b) column number 3
+
+```{r}
+XYZ[,3]
+```
+
+(c) rows with indices 3, 5, columns with indices 2, 3
+
+```{r}
+XYZ[c(3,5),c(2,3)]
+```
+
+(d) rows such that X is larger than 2.
+
+```{r}
+XYZ[XYZ[,1]>2,]
+```
+
+(e) columns named "Y" and "Z".
+
+```{r}
+XYZ[,c("Y","Z")]
+```
+## Exercise 3 : Etude de l'indice de masse corporelle
+Un échantillon de dossiers d'enfants a été saisi. Ce sont des enfants vus lors d'une visite en première section de maternelle en 1996-1997, dans des écoles de Bordeaux. L'échantillon présenté ici est constitué de 10 enfants agés de 3 ou 4 ans.
+
+Les données disponibles pour chaque enfant sont:
+    • le sexe G ou F
+    • le fait que leur école soit située en ZEP ou pas: O  pour oui , N pour Non.
+    • L'age en années et en mois à la date de la visite (deux variables, une pour le nombre d'années, une pour le nombre de mois).
+    • Le poids en kilos arrondis à 100g prés.
+    • La taille en cm arrondie à 0,5 cm prés
+
+| Prénom | Erika | Celia | Eric | Eve | Paul | Jean | Adam | Louis | Jules | Léo | Type de Variable |
+| :---| :---: |:---: |:---: |:---: |:---: |:---: |:---: |:---: |:---: |:---: | ---: |
+| Sexe | F | F | G | F | G | G | G | G | G | G | Qualitative |
+| ZEP | O | O | O | O | N | O | N | O | O | O | Qualitative |
+| Poids | 16 | 14 | 13,5 | 15,4 | 16,5 | 16 | 17 | 14,8 | 17 | 16,7| Quantitative|
+| An | 3 |3|3|4|3|4|3|3|4|3|Quantitative|
+| Mois |5|10|5|0|8|0|11|9|1|3|Quantitative/Ordinale|
+| Taille | 100|97,0|95,5|101.0|100,0|98,5|103|98|101,5|100.0|Quantitative|
+
+
+En statistiques, il est très important de connaître le type des variables étudiées: quantitatives, qualitatives, ordinales...Préciser ce qu'il en est dans le cas présent.
+
+### Question 1. 
+#### Enregistrer les données de chacunes des variables ci-dessus dans des vecteurs que vous nommerez: Individus, Sexe, Zep, Taille, Poids.
+```{r}
+
+Individus <- c( 'Erika' , 'Celia' , 'Eric' , 'Eve' , 'Paul' , 'Jean' , 'Adam' , 'Louis' , 'Jules' , 'Léo' )
+Sexe <- c('F','F','G','F','G','G','G','G','G','G')
+Zep <- c(T, T,T,T,F,T,F,T,T,T)
+Poids <- c( 16, 14 , 13.5 , 15.4 , 16.5, 16 , 17, 14.8 ,17 , 16.7)
+Taille <- c(100,97.0,95.5,101.0,100.0,98.5,103,98,101.5,100.0)
+
+```
+
+### Question 2.
+#### Calculer la moyenne des variables lorsque cela est possible.
+```{r}
+mean(Poids);
+mean(Taille);
+mean(Zep)
+```
+### Question 3.
+#### Utiliser la fonction summary() pour obtenir un résumé statistique des vecteurs que vous avez générés. Ce résumé dépend de la nature du vecteur. Observer.
+
+```{r}
+summary(Individus)
+```
+```{r}
+summary(Sexe)
+```
+```{r}
+summary(Taille)
+```
+
+
+```{r}
+summary(Poids)
+```
+```{r}
+summary(Zep)
+```
+### Question 4.
+#### Calculer l'IMC des individus et regroupez les valeurs obtenues dans un vecteur que vous nommerez IMC (l'IMC est le quotient poids(en kg)/taille^2(en m)).
+
+```{r}
+IMC  <- Poids/(Taille/100)**2;IMC
+```
+### Question 5.
+#### Regroupez ces variables dans la structure «tableau» de R: data.frame()
+```{r}
+data <- cbind.data.frame(Individus,Sexe,Zep,Poids,Taille,IMC);data
+```
+### Question 6.
+#### Utilisez  l'aide en ligne de R afin d'obtenir des informations sur la fonction plot().
+
+```{r}
+help(plot);
+help(plot.default);
+```
+
+### Question 7.
+#### Tracer le nuage de points du poids en fonction de la taille. Donner un titre à votre graphe, annotez les axes (paramètres de la fonction plot(), consultez la page d’aide
+
+```{r}
+plot(Taille,Poids,pch=5,col="green",xlab="Taille",ylab = "Poids",main="Répartition des poids et des tailles chez les individus")
+curve(14.5*((x/100)**2),add=TRUE,col="blue",lw=2)
+curve(17*((x/100)**2),add=TRUE,col="red",lw=2)
+legend(x = "bottomright",          # Position
+       legend = c("IMC = 17", "IMC = 14.5"),  # Legend texts
+       lty = c(1, 1),           # Line types
+       col = c("red", "blue"),           # Line colors
+       lwd = 2)                 # Line width
+```
+
