@@ -269,3 +269,15 @@ legend(x = "bottomright",          # Position
        lwd = 2)                 # Line width
 ```
 
+### Question 8.
+####  Importer dans votre dossier DONNEES le jeu de donnees <b>Imcenfant.txt</b> que vous trouverez  sur <b>AMETICE</b>
+
+### Question 9.
+#### Importer le fichier .txt ou le fichier .ods dans votre session R par la commande: <b> D=read.table(file.choose(),sep="\t",header=TRUE,dec=",");D; </b>
+```{r}
+D = read.table("../DONNEES/imcenfant.txt",sep="\t",header=T,dec=",")
+```
+
+### Question 10.
+#### Quelles sont les informations obtenues par dim(D)? colnames(D)? rownames(D)? Quel est le type de l'objet colnames(D)
+

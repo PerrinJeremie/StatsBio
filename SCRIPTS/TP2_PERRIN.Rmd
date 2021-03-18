@@ -1,0 +1,120 @@
+---
+title: "TP2"
+author: "Jérémie Perrin"
+date: "18/03/2021"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../RAPPORTS/") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 1 
+#### From past experience, it is known that a certain surgery has a 90% chance to succeed. This surgery is going to be performed on 5 patients. Let X be the random variable equal to the number of successes out of the 5 attempts
+### Question 1.
+#### Which probability distribution do you propose as a model for X? What are the values? What are the probabilities of the different values? What is their sum?
+##### I would propose a binomial distribution as a model for X. It could take values between 0 and 5. The probabilities are $\mathbb{P}(X=k) = \frac{k!}{5!(5-k)!}p^k(1-p)^{n-k}$, and their sum is 1.
+```{r}
+p <- 0.9
+P <- rep(1,6)
+for (k in 0:5){
+  P[k+1] <- choose(5,k)*(p**k)*(1-p)**(5-k)
+  print(paste("k = ",k,":",P[k+1]))
+}
+sum(P)
+```
+### Question 2.
+#### Compute the theoretical mean, variance, standard-deviation, median, first and third quartiles of that distribution. Why are the median and third quartile both equal to 5?
+```{r}
+summary(rbinom(1000,5,0.9))
+```
+#### The median and third quartile are both equal to five since $\sum_{k < 5} \mathbb{P}(X = k) < 0.5$.
+
+### Question 3.
+#### What is the probability that the surgery will succeed all 5 times? exactly 3 times? at most 3 times? at least 3 times? from 2 to 4 times?
+
+```{r}
+
+```
+
+
+## Exercise 3 <b>Importation et exportation de données externes</b>
+#### Importer le  fichier  imcenfant.txt en utilisant  pour cela la fonction read.table(). Faites attention aux  paramètres header, sep, dec, row.names.
+```{r}
+D <- read.table("../DONNEES/imcenfant.txt",sep="\t",header=T,dec=",")
+```
+
+### Question 1.
+#### Afficher le contenu de cet objet, que l’on nommera D.
+```{r}
+head(D)
+```
+### Question 2.
+#### Vérifier le nom des colonnes de D. Donnez des noms aux lignes.
+```{r}
+colnames(D);
+rownames(D) <- paste(rep("Individu",dim(D)[1]), 1:dim(D)[1]);
+```
+### Question 3.
+#### Rajoutez une colonne IMC à  D. Extrayez de D les lignes correspondant aux enfants ayant une IMC<15 et un age<=3,5. Donnez le nombre d'enfants vérifiant les conditions ci-dessus.
+```{r}
+D <- cbind.data.frame(D,IMC=D$poids/(D$taille/100)**2)
+```
+
+```{r}
+small_lowIMC <- D[(D$IMC<15)&((D$an+(1+D$mois)/12)<3.5),]; 
+small_lowIMC;
+dim(small_lowIMC)[1]
+```
+### Question 4.
+#### Exporter le nouveau  tableau de données  obtenu vers votre répertoire sous forme d’un fichier texte.
+
+```{r}
+write.table(small_lowIMC,file="../DONNEES/small_lowIMC.txt",quote=F,sep = '\t')
+```
+
+## Exercice 4 <b>Analyse de données</b>
+### Question 1.
+#### Sauvegardez   dans votre répertoire de travail le  fichier Poids_naissance.txt présent  dans le dossier  Data d’Ametice.
+### Question 2 & 3.
+#### Importez ce fichier dans R, dans un objet qui sera de type  tableau de données , nommé E. Utiliser pour cela la fonction read.table() en renseignant correctement les paramètres 	header, sep, dec, row.names.
+```{r}
+E <- read.table(file = "../DONNEES/Poids_naissance.txt", header = T, sep ='\t', row.names = 1);
+head(E)
+```
+
+### Question 4.
+#### Ajoutez une variable PTL1 (nombre d'antécédents de prématurés) ayant trois modalités (ou la troisième sera notée 2 et correspondra à 2 ou plus antécédents de prématurés).
+```{r}
+f <- function(x){ifelse(x>2,2,x)}
+E <-  cbind.data.frame(E,PTL1 = factor(sapply(E$PTL,f)))
+```
+
+### Question 5.
+#### Même question pour FVT (nombre de visite à un médeçin) pour rajouter FVT1.
+```{r}
+E <- cbind.data.frame(E,FVT1 = factor(sapply(E$FVT,f)))
+```
+```{r}
+head(E)
+```
+
+### Question 6.
+#### Ordonner le data frame selon  les poids de naissance croissant (BWT)
+```{r}
+E <- E[order(E$BWT),];
+head(E)
+```
+### Question 7.
+#### Extrayez les individus ayant des mères noires ou blanches et qui fument.
+
+```{r}
+smoking <- E[(E$RACE %in% c(2,3)) & (E$SMOKE == 1),];
+head(smoking)
+```
+
